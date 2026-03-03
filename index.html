@@ -3,123 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urgent Portal Fixer | Government & Job Ready</title>
-    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
-    <script src="https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js"></script>
+    <title>ProCard Builder | Rs. 100 Activation</title>
     <style>
-        :root { --primary: #27ae60; --error: #e74c3c; }
-        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fdfdfd; display: flex; justify-content: center; padding: 15px; }
-        .app-card { background: white; width: 100%; max-width: 480px; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #eee; }
-        .header { background: var(--primary); color: white; padding: 25px; text-align: center; }
-        .content { padding: 25px; }
-        .urgent-tag { background: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: bold; margin-bottom: 15px; display: inline-block; }
-        .tool-select { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid #eee; margin-bottom: 20px; font-size: 15px; font-weight: 600; }
-        .file-input-wrapper { border: 2px dashed #ccc; padding: 30px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; }
-        .file-input-wrapper:hover { border-color: var(--primary); background: #f9fffb; }
-        .btn-main { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 12px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        :root { --gold: #d4af37; --dark: #121212; --glass: rgba(255, 255, 255, 0.1); }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; margin: 0; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .main-layout { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; width: 100%; max-width: 900px; }
         
-        /* Payment/Lock Styling */
-        #lock-screen { display: none; padding: 20px; background: #fff9f9; border: 2px solid var(--error); border-radius: 15px; margin-top: 20px; }
-        .price-row { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; border-top: 1px solid #eee; padding-top: 15px; }
-        .wa-btn { background: #25D366; color: white; text-decoration: none; display: block; padding: 15px; border-radius: 10px; font-weight: bold; margin: 15px 0; text-align: center; }
+        /* Form Section */
+        .editor-box { background: #1e1e1e; padding: 25px; border-radius: 20px; width: 100%; max-width: 380px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0; background: #2a2a2a; border: 1px solid #333; border-radius: 10px; color: white; box-sizing: border-box; }
+        
+        /* Preview Section */
+        .preview-box { width: 100%; max-width: 350px; position: sticky; top: 20px; }
+        .phone-mockup { background: #000; border: 8px solid #333; border-radius: 40px; padding: 15px; height: 550px; overflow-y: auto; position: relative; }
+        .card-content { background: linear-gradient(180deg, #2c3e50, #000000); height: 100%; border-radius: 25px; padding: 20px; text-align: center; }
+        .avatar { width: 80px; height: 80px; background: var(--gold); border-radius: 50%; margin: 20px auto; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+        .p-btn { background: white; color: black; padding: 12px; border-radius: 30px; margin: 10px 0; display: block; text-decoration: none; font-weight: bold; font-size: 14px; }
+        
+        /* Lock Overlay */
+        #payment-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; text-align: center; }
+        .modal { background: white; color: black; padding: 40px; border-radius: 25px; width: 90%; max-width: 400px; }
+        .ep-badge { background: #28a745; color: white; padding: 10px; border-radius: 10px; font-weight: bold; margin: 15px 0; display: inline-block; }
     </style>
 </head>
 <body>
 
-<div class="app-card">
-    <div class="header">
-        <h2 style="margin:0;">⚡ Portal Optimizer</h2>
-        <p style="margin:5px 0 0; opacity: 0.9; font-size: 14px;">Instant Fix for NADRA, FBR, & Job Sites</p>
-    </div>
+    <h1 style="color: var(--gold);">✨ ProCard Builder</h1>
+    <p style="color: #888; margin-bottom: 30px;">Create your professional business identity for Rs. 100</p>
 
-    <div class="content">
-        <div class="urgent-tag">⚠️ DEADLINE MODE ACTIVE</div>
-        
-        <label style="font-size: 13px; font-weight: bold; color: #666;">SELECT URGENT SERVICE:</label>
-        <select id="urgentService" class="tool-select">
-            <option value="nadra">Join CNIC Front + Back (1 PDF)</option>
-            <option value="fpsc">Compress for FPSC/FBR (Under 50KB)</option>
-            <option value="urdu">Urdu/Arabic Image to Text (OCR)</option>
-            <option value="pdfword">PDF to Fully Editable Word</option>
-            <option value="pass">Remove Bank Statement Password</option>
-        </select>
-
-        <div class="file-input-wrapper" onclick="document.getElementById('realFile').click()">
-            <img src="https://cdn-icons-png.flaticon.com/512/1091/1091916.png" width="40" style="margin-bottom:10px;"><br>
-            <span id="fileNameDisplay">Upload Document / Photos</span>
-            <input type="file" id="realFile" hidden multiple>
-        </div>
-
-        <button class="btn-main" onclick="processUrgent()">Optimize & Lock Format</button>
-
-        <div id="processing" style="display:none; margin-top: 20px;">
-            <p style="color:var(--primary); font-weight: bold;">Applying Portal-Specific Formatting...</p>
-            <div style="background:#eee; height:8px; border-radius:10px;"><div id="pbar" style="width:0%; height:100%; background:var(--primary); transition:0.3s;"></div></div>
-        </div>
-
-        <div id="lock-screen">
-            <h3 style="color:var(--error); margin:0;">🔒 Format Secured</h3>
-            <p style="font-size: 13px; color: #555;">Your file is optimized for the portal. Pay <b>Rs. 30</b> for the Admin Approval Code.</p>
+    <div class="main-layout">
+        <div class="editor-box">
+            <h3>1. Enter Details</h3>
+            <input type="text" id="name" placeholder="Full Name" oninput="liveUpdate()">
+            <input type="text" id="title" placeholder="Job Title / Business Type" oninput="liveUpdate()">
+            <textarea id="bio" placeholder="Short Bio (Services you offer)" oninput="liveUpdate()"></textarea>
+            <input type="text" id="wa" placeholder="WhatsApp Number (e.g. 92300...)" oninput="liveUpdate()">
+            <input type="text" id="fb" placeholder="Facebook Link (Optional)" oninput="liveUpdate()">
             
-            <div class="price-row">
-                <span>Processing Fee:</span>
-                <span style="font-size: 20px; font-weight: 800;">Rs. 30</span>
+            <button onclick="lockAndPay()" style="background: var(--gold); color: black; border: none; padding: 18px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px;">
+                Download My Card (Rs. 100)
+            </button>
+        </div>
+
+        <div class="preview-box">
+            <h3 style="text-align: center;">2. Live Preview</h3>
+            <div class="phone-mockup">
+                <div class="card-content">
+                    <div class="avatar" id="dispInit">👤</div>
+                    <h2 id="dispName" style="margin: 5px 0;">Your Name</h2>
+                    <p id="dispTitle" style="color: var(--gold); margin-bottom: 20px;">Professional Title</p>
+                    <p id="dispBio" style="font-size: 13px; color: #bbb; line-height: 1.5;">Description of your great services...</p>
+                    <div style="margin-top: 30px;">
+                        <div class="p-btn">Chat on WhatsApp</div>
+                        <div class="p-btn" style="background: #3b5998; color: white;">Follow on Facebook</div>
+                    </div>
+                </div>
             </div>
-
-            <p style="font-size: 12px; background: #eee; padding: 10px; border-radius: 5px;">
-                Easypaisa: <b>0314-9664324</b><br>
-                Name: <b>(Your Name Here)</b>
-            </p>
-
-            <a href="https://wa.me/923149664324?text=I%20need%20the%20Urgent%20Portal%20Code.%20Paid%2030%20PKR." class="wa-btn">Get Approval via WhatsApp</a>
-
-            <input type="text" id="adminCode" placeholder="Enter Approval Code" style="width:100%; padding:15px; border-radius:10px; border:1px solid #ddd; box-sizing:border-box; margin-bottom:10px;">
-            <button class="btn-main" style="background:#2c3e50;" onclick="finishDownload()">Unlock Document</button>
         </div>
     </div>
-</div>
+
+    <div id="payment-overlay">
+        <div class="modal">
+            <h2 style="margin-top: 0;">🔒 Download Locked</h2>
+            <p>Your professional card is generated and ready to be hosted.</p>
+            <div class="ep-badge">Easypaisa: 0314-9664324</div>
+            <p style="font-size: 14px;">Pay <b>Rs. 100</b> and send a screenshot to get your <b>Unlock Code</b>.</p>
+            
+            <a href="https://wa.me/923149664324?text=I%20have%20paid%20Rs.100%20for%20my%20ProCard.%20Please%20send%20my%20Download%20Code." target="_blank" style="background: #25D366; color: white; padding: 15px; border-radius: 12px; display: block; text-decoration: none; font-weight: bold; margin-bottom: 10px;">
+                Send Screenshot (WhatsApp)
+            </a>
+            
+            <input type="text" id="unlockCode" placeholder="Enter 4-Digit Code" style="background: #eee; color: black; border: 1px solid #ccc; text-align: center; font-size: 20px;">
+            <button onclick="triggerDownload()" style="background: #121212; color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer;">Unlock & Download HTML</button>
+            <button onclick="closeLock()" style="background: none; border: none; color: #999; cursor: pointer; margin-top: 10px;">Back to Editor</button>
+        </div>
+    </div>
 
 <script>
-    let currentBlob = null;
-
-    function processUrgent() {
-        const file = document.getElementById('realFile').files[0];
-        if(!file) return alert("Select your file first!");
-
-        document.getElementById('processing').style.display = 'block';
-        
-        let w = 0;
-        let t = setInterval(() => {
-            w += 10;
-            document.getElementById('pbar').style.width = w + '%';
-            if(w >= 100) {
-                clearInterval(t);
-                document.getElementById('processing').style.display = 'none';
-                document.getElementById('lock-screen').style.display = 'block';
-                currentBlob = file; // Logic for specific tools would go here
-            }
-        }, 200);
+    function liveUpdate() {
+        document.getElementById('dispName').innerText = document.getElementById('name').value || "Your Name";
+        document.getElementById('dispTitle').innerText = document.getElementById('title').value || "Professional Title";
+        document.getElementById('dispBio').innerText = document.getElementById('bio').value || "Description of your great services...";
+        const firstLetter = document.getElementById('name').value.charAt(0).toUpperCase();
+        document.getElementById('dispInit').innerText = firstLetter || "👤";
     }
 
-    function finishDownload() {
-        const code = document.getElementById('adminCode').value.toUpperCase();
-        if(code === "FAST30" || code === "OK786") {
-            const url = URL.createObjectURL(currentBlob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "Portal_Ready_Document.pdf";
-            a.click();
-            alert("Success! Check your Downloads folder.");
-            window.location.reload();
-        } else {
-            alert("Invalid Code. Please wait for Admin response on WhatsApp.");
-        }
+    function lockAndPay() {
+        if(!document.getElementById('name').value) return alert("Please enter your name first!");
+        document.getElementById('payment-overlay').style.display = 'flex';
     }
 
-    document.getElementById('realFile').onchange = function() {
-        document.getElementById('fileNameDisplay').innerText = this.files.length + " File(s) Ready";
-    };
-</script>
+    function closeLock() {
+        document.getElementById('payment-overlay').style.display = 'none';
+    }
 
-</body>
-</html>
+    function triggerDownload() {
+        const code = document.getElementById('unlockCode').value;
+        // The code is "1122" - change this as you wish
+        if(code === "1122") {
+            const userData = {
+                name: document.getElementById('name').value,
+                title: document.getElementById('title').value,
+                bio: document.getElementById('bio').value,
+                wa: document.getElementById('wa').value
+            };
+            
+            // Generate the actual HTML file for the user
+            const blobContent = `
+                <html><body style="background:#000; color:#fff; text-align:center; font-family:sans-serif; padding:50px;">
+                <div style="border:2px solid #d4af37; padding:30px; border-radius:20px;">
+                <h1>${userData.name}</h1><p style="color:#d4af37">${userData.title}</p>
+                <p>${userData.bio}</p>
+                <a href="https://wa.me/${userData.wa}" style="background:#25D366; color:#fff; padding:15px; border-radius:10px; text-decoration:none; display:inline-block; margin-top:20px;">Contact
