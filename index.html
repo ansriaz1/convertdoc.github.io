@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urgent Doc Optimizer | Fast Admin Approval</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 20px; }
+        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 450px; text-align: center; }
+        .status-badge { background: #e8f5e9; color: #2e7d32; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        h2 { margin-top: 15px; color: #1a1a1a; }
+        .file-area { border: 2px dashed #3498db; padding: 30px; border-radius: 12px; margin: 20px 0; background: #fafafa; cursor: pointer; }
+        #convertBtn { background: #3498db; color: white; border: none; padding: 15px; border-radius: 8px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; }
+        
+        /* Payment & Approval Section */
+        #approval-box { display: none; margin-top: 20px; padding: 20px; border: 2px solid #f39c12; border-radius: 12px; background: #fffdf5; }
+        .wa-link { background: #25D366; color: white; text-decoration: none; padding: 12px; display: block; border-radius: 8px; font-weight: bold; margin: 15px 0; }
+        .admin-note { font-size: 12px; color: #7f8c8d; font-style: italic; }
+        .price-tag { font-size: 24px; font-weight: 900; color: #2c3e50; display: block; margin: 10px 0; }
+        
+        input.unlock-field { width: 70%; padding: 12px; border: 1px solid #ddd; border-radius: 5px; margin-bottom: 10px; text-align: center; font-size: 18px; letter-spacing: 2px; }
+        .unlock-btn { background: #2c3e50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <span class="status-badge">● ADMIN ONLINE (Instant Approval)</span>
+    <h2>⚡ Urgent Converter</h2>
+    <p style="font-size: 13px; color: #666;">High-Speed Optimization for All Gov & Job Portals</p>
+
+    <div class="file-area" onclick="document.getElementById('fileInput').click()">
+        <img src="https://cdn-icons-png.flaticon.com/512/1091/1091916.png" width="40" style="opacity: 0.6;"><br>
+        <span id="fileStatus">Tap to Upload Document</span>
+        <input type="file" id="fileInput" hidden>
+    </div>
+
+    <button id="convertBtn" onclick="processFile()">Start Urgent Conversion</button>
+
+    <div id="loading" style="display:none; margin: 20px 0;">
+        <p>Optimizing for Portal Specs...</p>
+        <div style="background:#eee; height:8px; border-radius:5px;"><div id="bar" style="width:0%; height:100%; background:#3498db; border-radius:5px; transition: 0.3s;"></div></div>
+    </div>
+
+    <div id="approval-box">
+        <h3 style="margin:0; color: #e67e22;">🔒 Approval Required</h3>
+        <p style="font-size: 14px;">Conversion complete! To download, please get <b>Instant Approval</b> from the admin.</p>
+        
+        <span class="price-tag">Rs. 30</span>
+        
+        <p style="font-size: 12px;">1. Pay 30 PKR to <b>0314-9664324</b> (Easypaisa)<br>2. Send screenshot on WhatsApp.</p>
+        
+        <a href="https://wa.me/923149664324?text=Admin%2C%20I%20have%20paid%20Rs.30.%20Please%20Approve%20my%20document%20ID:%20" id="waBtn" class="wa-link" target="_blank">
+            Request Instant Approval
+        </a>
+
+        <p class="admin-note">"Admin approves requests in just 30-60 seconds"</p>
+        <hr style="border:0; border-top: 1px solid #eee; margin: 20px 0;">
+
+        <input type="text" id="tokenInput" class="unlock-field" placeholder="Enter Approval Code">
+        <button class="unlock-btn" onclick="checkApproval()">Download Now</button>
+    </div>
+
+    <div id="success-box" style="display:none; color: #27ae60; font-weight: bold; margin-top: 20px;">
+        🎉 Approval Granted! Your download is ready.
+    </div>
+</div>
+
+<script>
+    // Generate a unique ID for the user's message
+    const requestId = Math.floor(1000 + Math.random() * 9000);
+    document.getElementById('waBtn').href += requestId;
+
+    function processFile() {
+        const file = document.getElementById('fileInput').files[0];
+        if(!file) return alert("Please select a file!");
+
+        document.getElementById('convertBtn').style.display = 'none';
+        document.getElementById('loading').style.display = 'block';
+
+        let val = 0;
+        let timer = setInterval(() => {
+            val += 10;
+            document.getElementById('bar').style.width = val + '%';
+            if(val >= 100) {
+                clearInterval(timer);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('approval-box').style.display = 'block';
+            }
+        }, 200);
+    }
+
+    function checkApproval() {
+        const input = document.getElementById('tokenInput').value;
+        
+        // ADMIN SECRET CODES (You can change these whenever you want)
+        const validCodes = ["FAST30", "OK786", "PAID1", "GOV99"];
+
+        if(validCodes.includes(input.toUpperCase())) {
+            document.getElementById('approval-box').style.display = 'none';
+            document.getElementById('success-box').style.display = 'block';
+            alert("Approval Confirmed! Accessing Secure Download Link...");
+            // Real logic: window.open('your_file_link');
+        } else {
+            alert("Approval Pending. Please wait for the admin to send your unique code on WhatsApp.");
+        }
+    }
+
+    document.getElementById('fileInput').onchange = function() {
+        document.getElementById('fileStatus').innerText = "Selected: " + this.files[0].name;
+    };
+</script>
+
+</body>
+</html>
