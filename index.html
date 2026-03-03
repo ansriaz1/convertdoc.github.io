@@ -3,120 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoiceSite AI | Pakistan's First Voice Builder</title>
+    <title>BrandMaster AI | Premium Business Kits</title>
     <style>
-        :root { --accent: #6c5ce7; --bg: #0f0c29; --card-bg: #ffffff; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; text-align: center; padding: 20px; transition: 0.5s; }
-        .container { max-width: 500px; margin: auto; }
+        :root { --gold: #d4af37; --premium: #1a1a1a; --white: #ffffff; }
+        body { font-family: 'Poppins', sans-serif; background: #0a0a0a; color: var(--white); text-align: center; padding: 20px; }
+        .container { max-width: 480px; margin: auto; }
         
-        /* Pulse Animation for Mic */
-        .mic-btn { width: 90px; height: 90px; border-radius: 50%; border: none; background: var(--accent); color: white; font-size: 35px; cursor: pointer; box-shadow: 0 0 20px var(--accent); transition: 0.3s; margin: 20px 0; }
-        .mic-btn.active { animation: pulse 1s infinite; background: #ff4757; box-shadow: 0 0 40px #ff4757; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        /* Input Styling */
+        .input-group { background: #1a1a1a; padding: 25px; border-radius: 20px; border: 1px solid #333; margin-bottom: 20px; }
+        input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #444; background: #222; color: white; box-sizing: border-box; font-size: 16px; margin-bottom: 15px; }
+        .btn-main { background: var(--gold); color: black; border: none; padding: 18px; border-radius: 12px; width: 100%; font-weight: 800; cursor: pointer; font-size: 16px; text-transform: uppercase; }
 
-        /* The Smart Card */
-        .preview-card { background: var(--card-bg); color: #333; border-radius: 30px; padding: 40px 20px; min-height: 400px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .theme-label { font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 10px; display: block; }
+        /* The Designs */
+        #brand-results { display: none; margin-top: 30px; animation: fadeIn 0.8s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .preview-box { background: white; color: black; width: 100%; border-radius: 15px; padding: 30px; margin-bottom: 15px; position: relative; overflow: hidden; box-sizing: border-box; }
+        .logo-box { height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; border: 5px solid #f0f0f0; }
+        .card-box { height: 200px; background: #1a1a1a; color: white; text-align: left; padding: 20px; border-left: 10px solid var(--gold); }
         
-        #payment-box { display: none; background: white; color: black; padding: 30px; border-radius: 25px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; width: 85%; max-width: 400px; box-shadow: 0 0 100px rgba(0,0,0,0.9); border: 4px solid var(--accent); }
-        .wa-confirm { background: #25D366; color: white; text-decoration: none; display: block; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 15px; }
-        input.code-field { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; text-align: center; font-size: 20px; font-weight: bold; }
+        .watermark { position: absolute; font-size: 35px; color: rgba(0,0,0,0.08); transform: rotate(-30deg); top: 40%; left: 10%; pointer-events: none; font-weight: 900; }
+        .card-watermark { color: rgba(255,255,255,0.05); }
+
+        /* Payment UI */
+        #pay-wall { display: none; background: var(--white); color: #000; padding: 30px; border-radius: 25px; margin-top: 20px; box-shadow: 0 0 50px rgba(212,175,55,0.3); }
+        .ep-badge { background: #28a745; color: white; padding: 10px; border-radius: 8px; font-weight: bold; margin: 10px 0; display: inline-block; }
+        .wa-link { background: #25D366; color: white; text-decoration: none; display: block; padding: 16px; border-radius: 12px; font-weight: bold; margin: 15px 0; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1 style="margin-bottom:0;">🎙️ VoiceSite <span style="color:var(--accent)">AI</span></h1>
-    <p style="opacity:0.7; font-size: 14px;">"Sirf bol kar apni professional website banayein"</p>
+    <div class="container">
+        <h1 style="color: var(--gold); letter-spacing: 2px;">BRANDMASTER <span style="font-weight: 300; color: white;">AI</span></h1>
+        <p style="color: #888; font-size: 14px;">Instant Professional Branding for Pakistani Startups</p>
 
-    <button class="mic-btn" id="micBtn" onclick="startVoiceEngine()">🎤</button>
-    <p id="status" style="font-size: 12px; color: #aaa;">Tap mic & say: "Mera naam [Name] hai, meri [Shop Type] ki shop hai..."</p>
+        <div class="input-group">
+            <input type="text" id="bizName" placeholder="Enter Business Name (e.g. Khan Mobiles)">
+            <input type="text" id="bizType" placeholder="What do you sell? (e.g. Biryani, Clothes)">
+            <button class="btn-main" onclick="generateAssets()">Create Brand Kit ✨</button>
+        </div>
 
-    <div class="preview-card" id="mainCard">
-        <span class="theme-label" id="themeName">Default Theme</span>
-        <h2 id="userName" style="margin: 10px 0; font-size: 32px;">...</h2>
-        <p id="userTitle" style="font-weight: bold; color: var(--accent);">Your Profession</p>
-        <p id="userBio" style="font-size: 14px; color: #666; line-height: 1.6; padding: 0 20px;">AI is waiting for your voice command to build the content...</p>
-        
-        <div style="margin-top: 40px;">
-            <button onclick="triggerPay()" style="background:var(--accent); color:white; border:none; padding:15px 30px; border-radius:50px; font-weight:bold; cursor:pointer; width: 80%;">
-                ACTIVATE SITE (Rs. 100)
-            </button>
+        <div id="loading" style="display:none;">⚙️ AI is designing your assets...</div>
+
+        <div id="brand-results">
+            <p style="color: var(--gold); font-weight: bold;">YOUR CUSTOM LOGO:</p>
+            <div class="preview-box logo-box" id="logoExport">
+                <div class="watermark">PRO-VERSION ONLY</div>
+                <div id="icon" style="font-size: 50px; margin-bottom: 10px;">💎</div>
+                <h2 id="lName" style="margin:0; letter-spacing: 2px; font-family: serif;">NAME</h2>
+                <small style="letter-spacing: 5px; color: #666;">ESTABLISHED 2026</small>
+            </div>
+
+            <p style="color: var(--gold); font-weight: bold;">YOUR DIGITAL BUSINESS CARD:</p>
+            <div class="preview-box card-box" id="cardExport">
+                <div class="watermark card-watermark">PRO-VERSION ONLY</div>
+                <h3 id="cName" style="margin:0; color: var(--gold);">NAME</h3>
+                <p id="cType" style="font-size: 12px; margin: 5px 0 20px;">Category</p>
+                <div style="font-size: 11px;">
+                    📞 WhatsApp Verified <br>
+                    ✅ Premium Quality Service <br>
+                    📍 Pakistan
+                </div>
+            </div>
+
+            <div id="pay-wall">
+                <h2 style="margin:0;">Ready for Success? 🚀</h2>
+                <p style="font-size: 14px; color: #555;">Download your <b>High-Resolution</b> Brand Kit without watermarks.</p>
+                
+                <div class="ep-badge">Easypaisa: 0314-9664324</div>
+                <p style="font-size: 20px; font-weight: 900; margin: 10px 0;">PRICE: RS. 200</p>
+
+                <a href="https://wa.me/923149664324?text=I%20want%20to%20unlock%20my%20Premium%20Brand%20Kit.%20Paid%20Rs.200." class="wa-link">Get Unlock Code (WhatsApp)</a>
+                
+                <input type="text" id="uCode" placeholder="Enter 4-Digit Code" style="background:#f4f4f4; color: black; text-align: center; font-size: 20px;">
+                <button class="btn-main" style="background: black; color: white;" onclick="unlockAssets()">Unlock & Download</button>
+            </div>
         </div>
     </div>
-</div>
-
-<div id="payment-box">
-    <h2 style="margin:0; color: var(--accent);">Target Achieved! 🎯</h2>
-    <p style="font-size: 14px;">Aapki AI website tyar hai. Link active karnay ke liye Rs. 100 pay karein.</p>
-    
-    <div style="background: #f8f9fa; padding: 15px; border-radius: 15px; margin: 15px 0;">
-        <span style="font-size: 12px; color: #666;">Easypaisa / JazzCash</span><br>
-        <strong style="font-size: 22px;">0314-9664324</strong>
-    </div>
-
-    <a href="https://wa.me/923149664324?text=I%20used%20the%20AI%20Voice%20Builder.%20Here%20is%20my%20screenshot%20for%20the%20Rs.100%20payment." class="wa-confirm">
-        WhatsApp Screenshot
-    </a>
-
-    <input type="text" id="unlockCode" class="code-field" placeholder="Enter Unlock Code">
-    <button onclick="checkCode()" style="background:#000; color:white; border:none; padding:12px; border-radius:8px; width:100%; cursor:pointer;">Unlock Live Link</button>
-</div>
 
 <script>
-    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-    recognition.lang = 'en-US'; 
+    function generateAssets() {
+        const name = document.getElementById('bizName').value;
+        const type = document.getElementById('bizType').value;
+        if(!name || !type) return alert("Please fill both fields!");
 
-    function startVoiceEngine() {
-        recognition.start();
-        document.getElementById('micBtn').classList.add('active');
-        document.getElementById('status').innerText = "Listening... Speak now!";
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('brand-results').style.display = 'none';
+
+        setTimeout(() => {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('brand-results').style.display = 'block';
+            document.getElementById('pay-wall').style.display = 'block';
+
+            // Text Update
+            document.getElementById('lName').innerText = name.toUpperCase();
+            document.getElementById('cName').innerText = name.toUpperCase();
+            document.getElementById('cType').innerText = type;
+
+            // Simple Icon Logic
+            if(type.toLowerCase().includes("food")) document.getElementById('icon').innerText = "🍴";
+            else if(type.toLowerCase().includes("cloth")) document.getElementById('icon').innerText = "👗";
+            else if(type.toLowerCase().includes("mobile")) document.getElementById('icon').innerText = "📱";
+            else document.getElementById('icon').innerText = "✨";
+        }, 2000);
     }
 
-    recognition.onresult = function(event) {
-        const text = event.results[0][0].transcript.toLowerCase();
-        document.getElementById('micBtn').classList.remove('active');
-        document.getElementById('status').innerText = "AI Processed: " + text;
-
-        // --- AI THEME SWITCHER ENGINE ---
-        let themeColor = "#6c5ce7";
-        let themeName = "Professional Blue";
-
-        if(text.includes("garden") || text.includes("kheti") || text.includes("plant")) {
-            themeColor = "#27ae60"; themeName = "Nature Green";
-        } else if(text.includes("food") || text.includes("restaurant") || text.includes("khana") || text.includes("burger")) {
-            themeColor = "#e67e22"; themeName = "Tasty Orange";
-        } else if(text.includes("mobile") || text.includes("tech") || text.includes("computer") || text.includes("software")) {
-            themeColor = "#2980b9"; themeName = "Tech Sky";
-        } else if(text.includes("beauty") || text.includes("salon") || text.includes("parlor")) {
-            themeColor = "#e84393"; themeName = "Elegant Pink";
-        }
-
-        // Apply Theme
-        document.documentElement.style.setProperty('--accent', themeColor);
-        document.getElementById('themeName').innerText = themeName;
-
-        // Extract Name (Simple Logic: First two words)
-        const words = text.split(' ');
-        document.getElementById('userName').innerText = words[0].toUpperCase() + (words[1] ? " " + words[1].toUpperCase() : "");
-        document.getElementById('userTitle').innerText = "Verified Business Owner";
-        document.getElementById('userBio').innerText = '"' + text + '"';
-    };
-
-    function triggerPay() { document.getElementById('payment-box').style.display = 'block'; }
-
-    function checkCode() {
-        const input = document.getElementById('unlockCode').value.toUpperCase();
-        // YOUR SECRET CODE
-        if(input === "VIP100") {
-            alert("SUCCESS! Your AI Website Link is being generated. Redirecting to WhatsApp for final link...");
-            window.location.href = "https://wa.me/923149664324?text=Code%20Verified.%20Please%20send%20my%20final%20link.";
+    function unlockAssets() {
+        const code = document.getElementById('uCode').value.toUpperCase();
+        if(code === "VIP200") { // Your new code
+            const watermarks = document.querySelectorAll('.watermark');
+            watermarks.forEach(w => w.style.display = 'none');
+            alert("Congratulations! Your Brand Kit is now High-Resolution. You can long-press and save your Logo and Card!");
         } else {
-            alert("Invalid Code. Please pay Rs. 100 to 03149664324 and get the code from Admin.");
+            alert("Invalid Code. Please pay Rs. 200 to activate.");
         }
     }
 </script>
-
 </body>
-    </html>
-    
+                    </html>
+                    
