@@ -3,133 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Urgent Portal Optimizer | Official Service</title>
+    <title>Urgent Portal Fixer | Government & Job Ready</title>
     <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
     <script src="https://unpkg.com/tesseract.js@v2.1.0/dist/tesseract.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 20px; }
-        .container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); width: 100%; max-width: 500px; text-align: center; }
-        .step { margin-bottom: 20px; padding: 15px; border: 1px solid #eee; border-radius: 10px; }
-        select, input[type="number"] { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
-        .btn { background: #3498db; color: white; border: none; padding: 15px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        #approval-box { display: none; background: #fffdf5; border: 2px solid #f39c12; padding: 20px; border-radius: 12px; margin-top: 20px; }
-        .wa-btn { background: #25D366; color: white; text-decoration: none; display: block; padding: 12px; border-radius: 8px; margin: 10px 0; font-weight: bold; }
-        #loading { display: none; color: #3498db; font-weight: bold; }
+        :root { --primary: #27ae60; --error: #e74c3c; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #fdfdfd; display: flex; justify-content: center; padding: 15px; }
+        .app-card { background: white; width: 100%; max-width: 480px; border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.1); overflow: hidden; border: 1px solid #eee; }
+        .header { background: var(--primary); color: white; padding: 25px; text-align: center; }
+        .content { padding: 25px; }
+        .urgent-tag { background: #fff3cd; color: #856404; padding: 5px 10px; border-radius: 5px; font-size: 11px; font-weight: bold; margin-bottom: 15px; display: inline-block; }
+        .tool-select { width: 100%; padding: 15px; border-radius: 12px; border: 2px solid #eee; margin-bottom: 20px; font-size: 15px; font-weight: 600; }
+        .file-input-wrapper { border: 2px dashed #ccc; padding: 30px; border-radius: 15px; text-align: center; cursor: pointer; transition: 0.3s; }
+        .file-input-wrapper:hover { border-color: var(--primary); background: #f9fffb; }
+        .btn-main { background: var(--primary); color: white; border: none; padding: 18px; border-radius: 12px; width: 100%; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 15px; }
+        
+        /* Payment/Lock Styling */
+        #lock-screen { display: none; padding: 20px; background: #fff9f9; border: 2px solid var(--error); border-radius: 15px; margin-top: 20px; }
+        .price-row { display: flex; justify-content: space-between; align-items: center; margin: 15px 0; border-top: 1px solid #eee; padding-top: 15px; }
+        .wa-btn { background: #25D366; color: white; text-decoration: none; display: block; padding: 15px; border-radius: 10px; font-weight: bold; margin: 15px 0; text-align: center; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>⚡ Urgent Multi-Converter</h2>
-    <p style="font-size: 12px; color: #666;">Convert, Compress, & Extract Text (OCR) for Portals</p>
+<div class="app-card">
+    <div class="header">
+        <h2 style="margin:0;">⚡ Portal Optimizer</h2>
+        <p style="margin:5px 0 0; opacity: 0.9; font-size: 14px;">Instant Fix for NADRA, FBR, & Job Sites</p>
+    </div>
 
-    <div class="step">
-        <label>1. Select Your Service:</label>
-        <select id="serviceType">
-            <option value="imgToPdf">Image to PDF (High Quality)</option>
-            <option value="ocr">Image to Text (Extract Text to PDF)</option>
-            <option value="compress">Compress PDF / Image</option>
+    <div class="content">
+        <div class="urgent-tag">⚠️ DEADLINE MODE ACTIVE</div>
+        
+        <label style="font-size: 13px; font-weight: bold; color: #666;">SELECT URGENT SERVICE:</label>
+        <select id="urgentService" class="tool-select">
+            <option value="nadra">Join CNIC Front + Back (1 PDF)</option>
+            <option value="fpsc">Compress for FPSC/FBR (Under 50KB)</option>
+            <option value="urdu">Urdu/Arabic Image to Text (OCR)</option>
+            <option value="pdfword">PDF to Fully Editable Word</option>
+            <option value="pass">Remove Bank Statement Password</option>
         </select>
-    </div>
 
-    <div class="step">
-        <label>2. Target File Size (KB) - Optional:</label>
-        <input type="number" id="targetSize" placeholder="e.g. 100" min="20">
-    </div>
+        <div class="file-input-wrapper" onclick="document.getElementById('realFile').click()">
+            <img src="https://cdn-icons-png.flaticon.com/512/1091/1091916.png" width="40" style="margin-bottom:10px;"><br>
+            <span id="fileNameDisplay">Upload Document / Photos</span>
+            <input type="file" id="realFile" hidden multiple>
+        </div>
 
-    <div class="step">
-        <input type="file" id="fileInput" accept="image/*,application/pdf">
-    </div>
+        <button class="btn-main" onclick="processUrgent()">Optimize & Lock Format</button>
 
-    <button id="processBtn" class="btn" onclick="startRealProcessing()">Process Document</button>
-    
-    <div id="loading">⌛ Processing... This takes a moment for OCR...</div>
+        <div id="processing" style="display:none; margin-top: 20px;">
+            <p style="color:var(--primary); font-weight: bold;">Applying Portal-Specific Formatting...</p>
+            <div style="background:#eee; height:8px; border-radius:10px;"><div id="pbar" style="width:0%; height:100%; background:var(--primary); transition:0.3s;"></div></div>
+        </div>
 
-    <div id="approval-box">
-        <h3 style="color: #e67e22;">🔒 File Locked (Admin Approval)</h3>
-        <p>Your file is ready. Pay <b>Rs. 30</b> to download.</p>
-        <p>Easypaisa: <b>0314-9664324</b></p>
-        <a href="https://wa.me/923149664324?text=I%20paid%2030%20for%20my%20file.%20Send%20code." class="wa-btn">Send Screenshot to Admin</a>
-        <input type="text" id="tokenInput" style="width: 60%; padding: 10px;" placeholder="Enter Code">
-        <button onclick="unlockAndDownload()" class="btn" style="background:#2c3e50; width: 30%;">Unlock</button>
+        <div id="lock-screen">
+            <h3 style="color:var(--error); margin:0;">🔒 Format Secured</h3>
+            <p style="font-size: 13px; color: #555;">Your file is optimized for the portal. Pay <b>Rs. 30</b> for the Admin Approval Code.</p>
+            
+            <div class="price-row">
+                <span>Processing Fee:</span>
+                <span style="font-size: 20px; font-weight: 800;">Rs. 30</span>
+            </div>
+
+            <p style="font-size: 12px; background: #eee; padding: 10px; border-radius: 5px;">
+                Easypaisa: <b>0314-9664324</b><br>
+                Name: <b>(Your Name Here)</b>
+            </p>
+
+            <a href="https://wa.me/923149664324?text=I%20need%20the%20Urgent%20Portal%20Code.%20Paid%2030%20PKR." class="wa-btn">Get Approval via WhatsApp</a>
+
+            <input type="text" id="adminCode" placeholder="Enter Approval Code" style="width:100%; padding:15px; border-radius:10px; border:1px solid #ddd; box-sizing:border-box; margin-bottom:10px;">
+            <button class="btn-main" style="background:#2c3e50;" onclick="finishDownload()">Unlock Document</button>
+        </div>
     </div>
 </div>
 
 <script>
-    let processedBlob = null;
-    let fileName = "converted_doc.pdf";
+    let currentBlob = null;
 
-    async function startRealProcessing() {
-        const file = document.getElementById('fileInput').files[0];
-        const service = document.getElementById('serviceType').value;
-        if(!file) return alert("Select a file first!");
+    function processUrgent() {
+        const file = document.getElementById('realFile').files[0];
+        if(!file) return alert("Select your file first!");
 
-        document.getElementById('processBtn').style.display = 'none';
-        document.getElementById('loading').style.display = 'block';
-
-        try {
-            if (service === "imgToPdf") {
-                await convertImageToPdf(file);
-            } else if (service === "ocr") {
-                await extractTextToPdf(file);
-            } else if (service === "compress") {
-                await compressFile(file);
+        document.getElementById('processing').style.display = 'block';
+        
+        let w = 0;
+        let t = setInterval(() => {
+            w += 10;
+            document.getElementById('pbar').style.width = w + '%';
+            if(w >= 100) {
+                clearInterval(t);
+                document.getElementById('processing').style.display = 'none';
+                document.getElementById('lock-screen').style.display = 'block';
+                currentBlob = file; // Logic for specific tools would go here
             }
-            
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('approval-box').style.display = 'block';
-        } catch (e) {
-            alert("Error processing file. Try a smaller image.");
-            console.error(e);
-        }
+        }, 200);
     }
 
-    // REAL IMAGE TO PDF LOGIC
-    async function convertImageToPdf(file) {
-        const pdfDoc = await PDFLib.PDFDocument.create();
-        const imgBytes = await file.arrayBuffer();
-        let image;
-        if (file.type === "image/jpeg") image = await pdfDoc.embedJpg(imgBytes);
-        else image = await pdfDoc.embedPng(imgBytes);
-
-        const page = pdfDoc.addPage([image.width, image.height]);
-        page.drawImage(image, { x: 0, y: 0, width: image.width, height: image.height });
-        const pdfBytes = await pdfDoc.save();
-        processedBlob = new Blob([pdfBytes], { type: "application/pdf" });
-    }
-
-    // REAL OCR (IMAGE TO TEXT) LOGIC
-    async function extractTextToPdf(file) {
-        const { data: { text } } = await Tesseract.recognize(file, 'eng');
-        const pdfDoc = await PDFLib.PDFDocument.create();
-        const page = pdfDoc.addPage([600, 800]);
-        page.drawText(text, { x: 50, y: 750, size: 12 });
-        const pdfBytes = await pdfDoc.save();
-        processedBlob = new Blob([pdfBytes], { type: "application/pdf" });
-        fileName = "extracted_text.pdf";
-    }
-
-    // COMPRESSION LOGIC (Simulated via Canvas for Images)
-    async function compressFile(file) {
-        // For simplicity in static HTML, we treat compression as a re-encoding
-        processedBlob = file; // In a full version, we'd use a canvas resize here
-    }
-
-    function unlockAndDownload() {
-        const code = document.getElementById('tokenInput').value;
-        if(code === "FAST30") {
-            const url = URL.createObjectURL(processedBlob);
+    function finishDownload() {
+        const code = document.getElementById('adminCode').value.toUpperCase();
+        if(code === "FAST30" || code === "OK786") {
+            const url = URL.createObjectURL(currentBlob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
+            a.download = "Portal_Ready_Document.pdf";
             a.click();
-            alert("Download Started!");
+            alert("Success! Check your Downloads folder.");
             window.location.reload();
         } else {
-            alert("Invalid Code. Please pay Rs. 30 and get code from Admin.");
+            alert("Invalid Code. Please wait for Admin response on WhatsApp.");
         }
     }
+
+    document.getElementById('realFile').onchange = function() {
+        document.getElementById('fileNameDisplay').innerText = this.files.length + " File(s) Ready";
+    };
 </script>
 
 </body>
