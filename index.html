@@ -3,115 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ProCard Builder | Rs. 100 Activation</title>
+    <title>VoiceSite AI | Pakistan's First Voice Builder</title>
     <style>
-        :root { --gold: #d4af37; --dark: #121212; --glass: rgba(255, 255, 255, 0.1); }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; margin: 0; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .main-layout { display: flex; flex-wrap: wrap; gap: 30px; justify-content: center; width: 100%; max-width: 900px; }
+        :root { --accent: #6c5ce7; --bg: #0f0c29; --card-bg: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; text-align: center; padding: 20px; transition: 0.5s; }
+        .container { max-width: 500px; margin: auto; }
         
-        /* Form Section */
-        .editor-box { background: #1e1e1e; padding: 25px; border-radius: 20px; width: 100%; max-width: 380px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        input, textarea { width: 100%; padding: 12px; margin: 10px 0; background: #2a2a2a; border: 1px solid #333; border-radius: 10px; color: white; box-sizing: border-box; }
+        /* Pulse Animation for Mic */
+        .mic-btn { width: 90px; height: 90px; border-radius: 50%; border: none; background: var(--accent); color: white; font-size: 35px; cursor: pointer; box-shadow: 0 0 20px var(--accent); transition: 0.3s; margin: 20px 0; }
+        .mic-btn.active { animation: pulse 1s infinite; background: #ff4757; box-shadow: 0 0 40px #ff4757; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+
+        /* The Smart Card */
+        .preview-card { background: var(--card-bg); color: #333; border-radius: 30px; padding: 40px 20px; min-height: 400px; box-shadow: 0 25px 50px rgba(0,0,0,0.5); transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .theme-label { font-size: 10px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); margin-bottom: 10px; display: block; }
         
-        /* Preview Section */
-        .preview-box { width: 100%; max-width: 350px; position: sticky; top: 20px; }
-        .phone-mockup { background: #000; border: 8px solid #333; border-radius: 40px; padding: 15px; height: 550px; overflow-y: auto; position: relative; }
-        .card-content { background: linear-gradient(180deg, #2c3e50, #000000); height: 100%; border-radius: 25px; padding: 20px; text-align: center; }
-        .avatar { width: 80px; height: 80px; background: var(--gold); border-radius: 50%; margin: 20px auto; display: flex; align-items: center; justify-content: center; font-size: 30px; }
-        .p-btn { background: white; color: black; padding: 12px; border-radius: 30px; margin: 10px 0; display: block; text-decoration: none; font-weight: bold; font-size: 14px; }
-        
-        /* Lock Overlay */
-        #payment-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; text-align: center; }
-        .modal { background: white; color: black; padding: 40px; border-radius: 25px; width: 90%; max-width: 400px; }
-        .ep-badge { background: #28a745; color: white; padding: 10px; border-radius: 10px; font-weight: bold; margin: 15px 0; display: inline-block; }
+        #payment-box { display: none; background: white; color: black; padding: 30px; border-radius: 25px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; width: 85%; max-width: 400px; box-shadow: 0 0 100px rgba(0,0,0,0.9); border: 4px solid var(--accent); }
+        .wa-confirm { background: #25D366; color: white; text-decoration: none; display: block; padding: 15px; border-radius: 12px; font-weight: bold; margin-top: 15px; }
+        input.code-field { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ddd; border-radius: 8px; text-align: center; font-size: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <h1 style="color: var(--gold);">✨ ProCard Builder</h1>
-    <p style="color: #888; margin-bottom: 30px;">Create your professional business identity for Rs. 100</p>
+<div class="container">
+    <h1 style="margin-bottom:0;">🎙️ VoiceSite <span style="color:var(--accent)">AI</span></h1>
+    <p style="opacity:0.7; font-size: 14px;">"Sirf bol kar apni professional website banayein"</p>
 
-    <div class="main-layout">
-        <div class="editor-box">
-            <h3>1. Enter Details</h3>
-            <input type="text" id="name" placeholder="Full Name" oninput="liveUpdate()">
-            <input type="text" id="title" placeholder="Job Title / Business Type" oninput="liveUpdate()">
-            <textarea id="bio" placeholder="Short Bio (Services you offer)" oninput="liveUpdate()"></textarea>
-            <input type="text" id="wa" placeholder="WhatsApp Number (e.g. 92300...)" oninput="liveUpdate()">
-            <input type="text" id="fb" placeholder="Facebook Link (Optional)" oninput="liveUpdate()">
-            
-            <button onclick="lockAndPay()" style="background: var(--gold); color: black; border: none; padding: 18px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px;">
-                Download My Card (Rs. 100)
+    <button class="mic-btn" id="micBtn" onclick="startVoiceEngine()">🎤</button>
+    <p id="status" style="font-size: 12px; color: #aaa;">Tap mic & say: "Mera naam [Name] hai, meri [Shop Type] ki shop hai..."</p>
+
+    <div class="preview-card" id="mainCard">
+        <span class="theme-label" id="themeName">Default Theme</span>
+        <h2 id="userName" style="margin: 10px 0; font-size: 32px;">...</h2>
+        <p id="userTitle" style="font-weight: bold; color: var(--accent);">Your Profession</p>
+        <p id="userBio" style="font-size: 14px; color: #666; line-height: 1.6; padding: 0 20px;">AI is waiting for your voice command to build the content...</p>
+        
+        <div style="margin-top: 40px;">
+            <button onclick="triggerPay()" style="background:var(--accent); color:white; border:none; padding:15px 30px; border-radius:50px; font-weight:bold; cursor:pointer; width: 80%;">
+                ACTIVATE SITE (Rs. 100)
             </button>
         </div>
+    </div>
+</div>
 
-        <div class="preview-box">
-            <h3 style="text-align: center;">2. Live Preview</h3>
-            <div class="phone-mockup">
-                <div class="card-content">
-                    <div class="avatar" id="dispInit">👤</div>
-                    <h2 id="dispName" style="margin: 5px 0;">Your Name</h2>
-                    <p id="dispTitle" style="color: var(--gold); margin-bottom: 20px;">Professional Title</p>
-                    <p id="dispBio" style="font-size: 13px; color: #bbb; line-height: 1.5;">Description of your great services...</p>
-                    <div style="margin-top: 30px;">
-                        <div class="p-btn">Chat on WhatsApp</div>
-                        <div class="p-btn" style="background: #3b5998; color: white;">Follow on Facebook</div>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div id="payment-box">
+    <h2 style="margin:0; color: var(--accent);">Target Achieved! 🎯</h2>
+    <p style="font-size: 14px;">Aapki AI website tyar hai. Link active karnay ke liye Rs. 100 pay karein.</p>
+    
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 15px; margin: 15px 0;">
+        <span style="font-size: 12px; color: #666;">Easypaisa / JazzCash</span><br>
+        <strong style="font-size: 22px;">0314-9664324</strong>
     </div>
 
-    <div id="payment-overlay">
-        <div class="modal">
-            <h2 style="margin-top: 0;">🔒 Download Locked</h2>
-            <p>Your professional card is generated and ready to be hosted.</p>
-            <div class="ep-badge">Easypaisa: 0314-9664324</div>
-            <p style="font-size: 14px;">Pay <b>Rs. 100</b> and send a screenshot to get your <b>Unlock Code</b>.</p>
-            
-            <a href="https://wa.me/923149664324?text=I%20have%20paid%20Rs.100%20for%20my%20ProCard.%20Please%20send%20my%20Download%20Code." target="_blank" style="background: #25D366; color: white; padding: 15px; border-radius: 12px; display: block; text-decoration: none; font-weight: bold; margin-bottom: 10px;">
-                Send Screenshot (WhatsApp)
-            </a>
-            
-            <input type="text" id="unlockCode" placeholder="Enter 4-Digit Code" style="background: #eee; color: black; border: 1px solid #ccc; text-align: center; font-size: 20px;">
-            <button onclick="triggerDownload()" style="background: #121212; color: white; border: none; padding: 15px; border-radius: 12px; width: 100%; font-weight: bold; cursor: pointer;">Unlock & Download HTML</button>
-            <button onclick="closeLock()" style="background: none; border: none; color: #999; cursor: pointer; margin-top: 10px;">Back to Editor</button>
-        </div>
-    </div>
+    <a href="https://wa.me/923149664324?text=I%20used%20the%20AI%20Voice%20Builder.%20Here%20is%20my%20screenshot%20for%20the%20Rs.100%20payment." class="wa-confirm">
+        WhatsApp Screenshot
+    </a>
+
+    <input type="text" id="unlockCode" class="code-field" placeholder="Enter Unlock Code">
+    <button onclick="checkCode()" style="background:#000; color:white; border:none; padding:12px; border-radius:8px; width:100%; cursor:pointer;">Unlock Live Link</button>
+</div>
 
 <script>
-    function liveUpdate() {
-        document.getElementById('dispName').innerText = document.getElementById('name').value || "Your Name";
-        document.getElementById('dispTitle').innerText = document.getElementById('title').value || "Professional Title";
-        document.getElementById('dispBio').innerText = document.getElementById('bio').value || "Description of your great services...";
-        const firstLetter = document.getElementById('name').value.charAt(0).toUpperCase();
-        document.getElementById('dispInit').innerText = firstLetter || "👤";
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = 'en-US'; 
+
+    function startVoiceEngine() {
+        recognition.start();
+        document.getElementById('micBtn').classList.add('active');
+        document.getElementById('status').innerText = "Listening... Speak now!";
     }
 
-    function lockAndPay() {
-        if(!document.getElementById('name').value) return alert("Please enter your name first!");
-        document.getElementById('payment-overlay').style.display = 'flex';
-    }
+    recognition.onresult = function(event) {
+        const text = event.results[0][0].transcript.toLowerCase();
+        document.getElementById('micBtn').classList.remove('active');
+        document.getElementById('status').innerText = "AI Processed: " + text;
 
-    function closeLock() {
-        document.getElementById('payment-overlay').style.display = 'none';
-    }
+        // --- AI THEME SWITCHER ENGINE ---
+        let themeColor = "#6c5ce7";
+        let themeName = "Professional Blue";
 
-    function triggerDownload() {
-        const code = document.getElementById('unlockCode').value;
-        // The code is "1122" - change this as you wish
-        if(code === "1122") {
-            const userData = {
-                name: document.getElementById('name').value,
-                title: document.getElementById('title').value,
-                bio: document.getElementById('bio').value,
-                wa: document.getElementById('wa').value
-            };
-            
-            // Generate the actual HTML file for the user
-            const blobContent = `
-                <html><body style="background:#000; color:#fff; text-align:center; font-family:sans-serif; padding:50px;">
-                <div style="border:2px solid #d4af37; padding:30px; border-radius:20px;">
-                <h1>${userData.name}</h1><p style="color:#d4af37">${userData.title}</p>
-                <p>${userData.bio}</p>
-                <a href="https://wa.me/${userData.wa}" style="background:#25D366; color:#fff; padding:15px; border-radius:10px; text-decoration:none; display:inline-block; margin-top:20px;">Contact
+        if(text.includes("garden") || text.includes("kheti") || text.includes("plant")) {
+            themeColor = "#27ae60"; themeName = "Nature Green";
+        } else if(text.includes("food") || text.includes("restaurant") || text.includes("khana") || text.includes("burger")) {
+            themeColor = "#e67e22"; themeName = "Tasty Orange";
+        } else if(text.includes("mobile") || text.includes("tech") || text.includes("computer") || text.includes("software")) {
+            themeColor = "#2980b9"; themeName = "Tech Sky";
+        } else if(text.includes("beauty") || text.includes("salon") || text.includes("parlor")) {
+            themeColor = "#e84393"; themeName = "Elegant Pink";
+        }
+
+        // Apply Theme
+        document.documentElement.style.setProperty('--accent', themeColor);
+        document.getElementById('themeName').innerText = themeName;
+
+        // Extract Name (Simple Logic: First two words)
+        const words = text.split(' ');
+        document.getElementById('userName').innerText = words[0].toUpperCase() + (words[1] ? " " + words[1].toUpperCase() : "");
+        document.getElementById('userTitle').innerText = "Verified Business Owner";
+        document.getElementById('userBio').innerText = '"' + text + '"';
+    };
+
+    function triggerPay() { document.getElementById('payment-box').style.display = 'block'; }
+
+    function checkCode() {
+        const input = document.getElementById('unlockCode').value.toUpperCase();
+        // YOUR SECRET CODE
+        if(input === "VIP100") {
+            alert("SUCCESS! Your AI Website Link is being generated. Redirecting to WhatsApp for final link...");
+            window.location.href = "https://wa.me/923149664324?text=Code%20Verified.%20Please%20send%20my%20final%20link.";
+        } else {
+            alert("Invalid Code. Please pay Rs. 100 to 03149664324 and get the code from Admin.");
+        }
+    }
+</script>
+
+</body>
+    </html>
+    
