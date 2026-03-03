@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BrandMaster AI | Auto-Download Kit</title>
+    <title>BrandMaster AI | Logo & Card Builder</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root { --gold: #d4af37; --dark: #0a0a0a; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: white; text-align: center; padding: 20px; }
+        :root { --gold: #d4af37; --dark: #0a0a0a; --white: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--dark); color: var(--white); text-align: center; padding: 20px; }
         .container { max-width: 450px; margin: auto; }
         
         .input-group { background: #1a1a1a; padding: 20px; border-radius: 20px; border: 1px solid #333; margin-bottom: 20px; }
@@ -16,48 +16,70 @@
 
         /* The Designs */
         #brand-results { display: none; }
-        .preview-box { background: white; color: black; width: 350px; height: 350px; margin: 20px auto; border-radius: 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
-        .business-card { width: 350px; height: 200px; background: #111; color: white; border-left: 8px solid var(--gold); padding: 20px; text-align: left; box-sizing: border-box; }
         
-        .watermark { position: absolute; font-size: 30px; color: rgba(0,0,0,0.1); transform: rotate(-30deg); font-weight: 900; pointer-events: none; z-index: 10; }
+        /* Logo Styling */
+        .logo-preview { background: white; color: black; width: 300px; height: 300px; margin: 20px auto; border-radius: 15px; display: flex; flex-direction: column; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+        
+        /* Business Card Styling */
+        .card-preview { background: #111; color: white; width: 350px; height: 200px; margin: 20px auto; border-left: 10px solid var(--gold); border-radius: 10px; position: relative; overflow: hidden; text-align: left; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; }
+        
+        .watermark { position: absolute; font-size: 25px; color: rgba(150,150,150,0.2); transform: rotate(-30deg); font-weight: 900; pointer-events: none; z-index: 10; width: 100%; text-align: center; }
         
         /* Payment Area */
         #pay-wall { display: none; background: white; color: black; padding: 25px; border-radius: 20px; margin-top: 20px; }
-        .download-btn { background: #28a745; color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; margin-top: 10px; display: none; }
+        .download-group { display: none; margin-top: 15px; }
+        .download-btn { background: #28a745; color: white; border: none; padding: 12px; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; margin-bottom: 10px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1 style="color: var(--gold);">BRANDMASTER AI</h1>
-        <p style="font-size: 14px; opacity: 0.7;">Instant Professional Brand Kit</p>
+        <h1 style="color: var(--gold); margin-bottom: 5px;">BRANDMASTER AI</h1>
+        <p style="font-size: 13px; opacity: 0.7; margin-top: 0;">Professional Logo & Card Generator</p>
 
         <div class="input-group">
             <input type="text" id="bizName" placeholder="Business Name">
-            <input type="text" id="bizType" placeholder="Business Type (e.g. Food, Tech)">
+            <input type="text" id="bizType" placeholder="Type (e.g. Food, Mobile, Cloth)">
+            <input type="text" id="bizPhone" placeholder="WhatsApp Number">
+            <input type="text" id="bizLoc" placeholder="Shop Location / City">
             <button class="btn-main" onclick="generateAssets()">GENERATE BRAND KIT ✨</button>
         </div>
 
         <div id="brand-results">
-            <div class="preview-box" id="logoArea">
+            <p style="color: var(--gold);">1. YOUR LOGO</p>
+            <div class="logo-preview" id="logoArea">
                 <div class="watermark">PRO VERSION</div>
-                <div id="icon" style="font-size: 60px;">✨</div>
-                <h2 id="lName" style="margin: 10px 0; font-family: serif;">NAME</h2>
-                <small style="letter-spacing: 3px;">PREMIUM QUALITY</small>
+                <div id="icon" style="font-size: 60px;">⭐</div>
+                <h2 id="lName" style="margin: 10px 0; font-family: serif; text-transform: uppercase;">NAME</h2>
+                <small style="letter-spacing: 3px; color: #666;">PREMIUM BRAND</small>
+            </div>
+
+            <p style="color: var(--gold);">2. YOUR BUSINESS CARD</p>
+            <div class="card-preview" id="cardArea">
+                <div class="watermark" style="color: rgba(255,255,255,0.1);">PRO VERSION</div>
+                <h2 id="cN" style="margin: 0; color: var(--gold); text-transform: uppercase;">NAME</h2>
+                <p id="cT" style="font-size: 12px; margin: 5px 0 15px; opacity: 0.8;">TYPE</p>
+                <div style="font-size: 13px; border-top: 1px solid #333; padding-top: 10px;">
+                    📞 WhatsApp: <span id="cP">0300...</span><br>
+                    📍 Location: <span id="cL">City Name</span>
+                </div>
             </div>
 
             <div id="pay-wall">
-                <h3>✅ Brand Kit Ready!</h3>
-                <p style="font-size: 13px;">Pay <b>Rs. 200</b> to remove watermarks and download.</p>
-                <div style="background:#eee; padding:10px; border-radius:10px; font-weight:bold; margin-bottom:10px;">
+                <h3 style="margin:0;">🚀 Brand Kit is Ready!</h3>
+                <p style="font-size: 13px;">Pay <b>Rs. 200</b> to unlock and download both files.</p>
+                <div style="background:#f4f4f4; padding:10px; border-radius:10px; font-weight:bold; margin-bottom:10px;">
                     Easypaisa: 0314-9664324
                 </div>
-                <a href="https://wa.me/923149664324?text=Paid%20200%20for%20Logo." style="color: #25D366; font-weight:bold; text-decoration:none;">Get Code on WhatsApp</a>
+                <a href="https://wa.me/923149664324?text=Paid%20200%20for%20Full%20Brand%20Kit." style="color: #25D366; font-weight:bold; text-decoration:none; display: block; margin-bottom: 15px;">Get Code on WhatsApp</a>
                 
-                <input type="text" id="uCode" placeholder="Enter Code" style="background:#f4f4f4; text-align:center; color:black;">
-                <button class="btn-main" onclick="unlock()">VERIFY CODE</button>
+                <input type="text" id="uCode" placeholder="Enter Code" style="background:#eee; text-align:center; color:black;">
+                <button class="btn-main" onclick="unlock()">VERIFY & UNLOCK</button>
                 
-                <button id="dlBtn" class="download-btn" onclick="saveImage()">⬇️ DOWNLOAD LOGO TO GALLERY</button>
+                <div id="downloadGroup" class="download-group">
+                    <button class="download-btn" onclick="saveImage('logoArea', 'My_Logo')">⬇️ DOWNLOAD LOGO</button>
+                    <button class="download-btn" onclick="saveImage('cardArea', 'My_Business_Card')" style="background: #007bff;">⬇️ DOWNLOAD BUSINESS CARD</button>
+                </div>
             </div>
         </div>
     </div>
@@ -66,16 +88,28 @@
     function generateAssets() {
         const name = document.getElementById('bizName').value;
         const type = document.getElementById('bizType').value.toLowerCase();
-        if(!name || !type) return alert("Please fill fields!");
+        const phone = document.getElementById('bizPhone').value;
+        const loc = document.getElementById('bizLoc').value;
+
+        if(!name || !type || !phone || !loc) return alert("Please fill all fields!");
 
         document.getElementById('brand-results').style.display = 'block';
         document.getElementById('pay-wall').style.display = 'block';
-        document.getElementById('lName').innerText = name.toUpperCase();
 
-        if(type.includes("food")) document.getElementById('icon').innerText = "🍔";
-        else if(type.includes("cloth")) document.getElementById('icon').innerText = "👗";
-        else if(type.includes("mobile")) document.getElementById('icon').innerText = "📱";
-        else document.getElementById('icon').innerText = "⭐";
+        // Update Text
+        document.getElementById('lName').innerText = name;
+        document.getElementById('cN').innerText = name;
+        document.getElementById('cT').innerText = type.toUpperCase();
+        document.getElementById('cP').innerText = phone;
+        document.getElementById('cL').innerText = loc;
+
+        // Dynamic Icon Logic
+        const iconDiv = document.getElementById('icon');
+        if(type.includes("food") || type.includes("restaurant")) iconDiv.innerText = "🍔";
+        else if(type.includes("cloth") || type.includes("boutique")) iconDiv.innerText = "👗";
+        else if(type.includes("mobile") || type.includes("tech")) iconDiv.innerText = "📱";
+        else if(type.includes("salon") || type.includes("beauty")) iconDiv.innerText = "✂️";
+        else iconDiv.innerText = "⭐";
     }
 
     function unlock() {
@@ -83,19 +117,19 @@
         if(code === "VIP200") {
             // Remove Watermarks
             document.querySelectorAll('.watermark').forEach(w => w.style.display = 'none');
-            // Show Download Button
-            document.getElementById('dlBtn').style.display = 'block';
-            alert("Payment Verified! You can now click the Green Download button.");
+            // Show Download Buttons
+            document.getElementById('downloadGroup').style.display = 'block';
+            alert("Unlocked! Click the buttons below to save your files.");
         } else {
-            alert("Invalid Code!");
+            alert("Invalid Code! Please pay Rs. 200.");
         }
     }
 
-    function saveImage() {
-        const logoArea = document.getElementById('logoArea');
-        html2canvas(logoArea).then(canvas => {
+    function saveImage(elementId, fileName) {
+        const element = document.getElementById(elementId);
+        html2canvas(element, { scale: 2 }).then(canvas => {
             const link = document.createElement('a');
-            link.download = 'My_Professional_Logo.png';
+            link.download = fileName + '.png';
             link.href = canvas.toDataURL("image/png");
             link.click();
         });
